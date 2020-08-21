@@ -20,8 +20,10 @@ const readDir = (base) => {
         if (itemState.isDirectory()) {
             readDir(itemPath);
         } else {
-            copyToFolder(item, itemPath, destinationPath)
+            copyToFolder(item, itemPath, destinationPath);
         }
+
+        console.log('reade to delete now')
     })
 };
 
@@ -29,10 +31,22 @@ const copyToFolder = (itemName, itemPath ,destination) => {
     let letterDirPath = path.join(destination, itemName.slice(0,1));
     let newPath = path.join(letterDirPath, itemName);
     const callback = () => {console.log('done')};
-    // let rs = fs.createReadStream(itemPath)
-    // let ws = fs.createWriteStream(newPath)
 
     createDirectory(letterDirPath);
+
+    let rs = fs.createReadStream(itemPath)
+    let ws = fs.createWriteStream(newPath)
+    rs.pipe(ws).on('finish', () => {
+        console.log(`done copying file ${itemName}`);
+        fs.unlink(itemPath, () => {
+            console.log(`File ${itemPath} was deleted`)
+        });
+    });
+
+
+    // ws.on('finish', () => {
+    //             console.log('done copying a file');
+    //         })
 
     // rs.pipe(ws, 
     //     {end: false}
@@ -40,7 +54,7 @@ const copyToFolder = (itemName, itemPath ,destination) => {
     //         console.log('done copying a file');
     //     });
 
-    fs.createReadStream(itemPath).pipe(fs.createWriteStream(newPath), {end: false}).on('end', data => {console.log('to delete: ' + itemPath)})
+    // fs.createReadStream(itemPath).pipe(fs.createWriteStream(newPath), {end: false}).on('end', data => {console.log('to delete: ' + itemPath)})
 
 }
 
