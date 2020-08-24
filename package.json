@@ -16,7 +16,9 @@
     "url": "https://github.com/egorovg13/node_homework1/issues"
   },
   "homepage": "https://github.com/egorovg13/node_homework1#readme",
-  "dependencies": {},
+  "dependencies": {
+    "rimraf": "^3.0.2"
+  },
   "devDependencies": {
     "eslint": "^7.7.0",
     "eslint-config-standard": "^14.1.1",
